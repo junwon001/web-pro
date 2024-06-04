@@ -1,0 +1,61 @@
+
+{% extends "admin/layout.html" %}
+{% block content %}
+<!--Section: update post-->
+<section class="mb-4">
+    <div class="card">
+        <div class="card-header py-3">
+            <h5 class="mb-0 text-center">
+                <strong>Update Blog Post Form</strong>
+            </h5>
+        </div>
+        <div class="card-body text-center">
+            {% if data %}
+<!-- form -->
+<form action="{{ url_for('admin_update_post', id=data._id) }}" method="POST" enctype="multipart/form-data">
+    <!-- title input -->
+    <div class="form-outline mb-4">
+        <input type="text" id="title" name="title" value="{{ data.title }}" class="form-control" required/>
+        <label class="form-label" for="title">Blog post title</label>
+    </div>
+
+    <!-- author input -->
+    <div class="form-outline mb-4">
+        <input type="text" id="author" name="author" value="{{ data.author }}" class="form-control" required/>
+        <label class="form-label" for="author">Author</label>
+    </div>
+
+    <!-- content -->
+    <div class="form-outline mb-4">
+        <textarea class="form-control" id="content" name="content"rows="10">{{ data.content }}</textarea>
+        <label class="form-label" for="content">Blog post content</label>
+    </div>
+
+    <!-- image -->
+    <div class="mb-4">
+        <label class="form-label fw-bold" for="image">Change blog post image? Upload it here:</label>
+        <input type="file" class="form-control" id="image" name="image" />
+    </div>
+
+    <!-- Current image -->
+    <div class="mb-4">
+        <label class="form-label fw-bold" for="current_profile_img">Current blog post image</label>
+        <img src="{{ url_for('display_image', filename=data.image) }}" id="current_profile_img" class="img-fluid shadow-2-strong rounded-5 mb-4" alt="" />
+    </div>
+
+    <!-- hidden field -->
+    <input type="hidden" name="_id" value="{{ data._id }}" />
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4">
+        UPDATE
+    </button>
+</form>
+{% else %}
+<p class="fw-bold">Data is not Found!!</p>
+{% endif %}
+        </div>
+    </div>
+</section>
+<!--Section: update post-->
+{% endblock %}
