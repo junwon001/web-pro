@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="my-3">
+    {% if data %}
+    <h4 class="text-center py-3 text-decoration-underline">{{ data.title }}</h4>
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <!-- 게시물 작성자 이메일 제거 -->
+        </div>
+    </div>
+    <section>
+        {% for line in data.content.splitlines() %}
+            <p>{{ line|e }}</p>
+        {% endfor %}
+        {% if data.image %}
+        <img src="{{ url_for('static', filename='uploads/' ~ data.image) }}" alt="Post Image" class="img-fluid">
+        {% endif %}
+    </section>
+    <section class="text-center py-4 mb-4">
+        <form action="{{ url_for('recommend_post', id=data._id) }}" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-success" {% if session.user_email in data.recommendations %}disabled{% endif %}>Recommend</button>
+        </form>
+        <div class="mt-2">추천: {{ data.likes }}</div>
+    </section>
+    {% if session.user_email == data.author %}
+    <section class="text-center py-4 mb-4">
+        <a href="{{ url_for('admin_update_post', id=data._id) }}" class="btn btn-warning me-1">Edit</a>
+        <form action="{{ url_for('admin_delete_post', id=data._id) }}" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </section>
+    {% endif %}
+    <section class="border-bottom mb-3">
+        {% if data.comments %}
+        <p class="text-center"><strong>Comments: {{ data.comments|length }}</strong></p>
+        {% for comment in data.comments %}
+        <div class="row mb-4">
+            <div class="col-1">
+                <img src="https://www.gravatar.com/avatar/{{ comment.email|e }}" class="img-fluid shadow-1-strong rounded-5" alt="" />
+            </div>
+            <div class="col-11">
+                <p class="mb-2"><strong>{{ comment.name|e }}</strong> on {{ comment.created_date }}</p> <!-- 이름과 작성일 표시 -->
+                <p>{{ comment.content|e }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </section>
+    <section>
+        {% include "flashmessage.html" %}
+        <p class="text-center"><strong>Leave a comment</strong></p>
+        <form action="{{ url_for('new_comment', id=data._id) }}" method="POST">
+            <div class="form-outline mb-4">
+                <input type="text" name="name" id="form4Example1" class="form-control" required />
+                <label class="form-label" for="form4Example1">Name</label>
+            </div>
+            <div class="form-outline mb-4">
+                <input type="email" name="email" id="form4Example2" class="form-control" required />
+                <label class="form-label" for="form4Example2">Email address</label>
+            </div>
+            <div class="form-outline mb-4">
+                <textarea class="form-control" name="content" id="form4Example3" rows="4" required></textarea>
+                <label class="form-label" for="form4Example3">Text</label>
+            </div>
+            <input type="hidden" name="_id" value="{{ data._id }}" />
+            <button type="submit" class="btn btn-primary btn-block mb-4">Publish</button>
+        </form>
+    </section>
+    {% else %}
+    <h4 class="text-center py-3 text-decoration-underline">Sorry. Data is not found.</h4>
+    {% endif %}
+</section>
+{% endblock %}

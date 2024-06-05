@@ -1,0 +1,48 @@
+
+{% extends "admin/layout.html" %}
+{% block content %}
+<!--Section: add new post-->
+<section class="mb-4">
+    <div class="card">
+        <div class="card-header py-3">
+            <h5 class="mb-0 text-center">
+                <strong>New Blog Post Form</strong>
+            </h5>
+        </div>
+        <div class="card-body text-center">
+            <!-- form -->
+            <form action="{{ url_for('admin_new_post') }}" method="POST" enctype="multipart/form-data">
+                <!-- title input -->
+                <div class="form-outline mb-4">
+                    <input type="text" id="title" name="title" value="" class="form-control" required/>
+                    <label class="form-label" for="title">Blog post title</label>
+                </div>
+
+                <!-- author input -->
+                <div class="form-outline mb-4">
+                    <input type="text" id="author" name="author" value="Admin" class="form-control" required/>
+                    <label class="form-label" for="author">Author</label>
+                </div>
+
+                <!-- content -->
+                <div class="form-outline mb-4">
+                    <textarea class="form-control" id="content" name="content"rows="10"></textarea>
+                    <label class="form-label" for="content">Blog post content</label>
+                </div>
+
+                <!-- image -->
+                <div class="mb-4">
+                    <label class="form-label" for="image">Blog post image</label>
+                    <input type="file" class="form-control" id="image" name="image" required/>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">
+                    SAVE
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+<!--Section: add new post-->
+{% endblock %}

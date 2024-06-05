@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="my-3 text-center">
+    <h4 class="text-center py-3 text-decoration-underline">여행 정보 공유 게시판</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">닉네임</th>
+                <th scope="col">작성일</th>
+                <th scope="col">조회</th>
+                <th scope="col">추천</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if data %}
+                {% for post in data %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        <a href="{{ url_for('posts_detail', id=post._id) }}">
+                            {% if post.tags %}[{{ post.tags }}]{% endif %} {{ post.title }}
+                        </a>
+                        {% if post.created_date.date() == g.current_time.date() %}<span class="badge bg-danger">NEW</span>{% endif %}
+                    </td>
+                    <td>{{ post.author }}</td>
+                    <td>{{ post.created_date }}</td>
+                    <td>{{ post.views }}</td>
+                    <td>{{ post.likes }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">No more data</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('new_post') }}" class="btn btn-primary">글작성</a>
+</section>
+
+<nav class="my-4" aria-label="...">
+    <ul class="pagination pagination-circle justify-content-center">
+        <li class="page-item">
+            <a class="page-link" href="{% if page > 1 %}{{ url_for('posts', page=page - 1) }}{% else %}#{% endif %}">Previous</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% if not last_data %}{{ url_for('posts', page=page + 1) }}{% else %}#{% endif %}">Next</a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}

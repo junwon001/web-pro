@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+<!--Section: Projects-->
+<section class="my-3 text-center">
+    <h4 class="text-center py-3 text-decoration-underline">All projects</h4>
+
+    <div class="row">
+        <!-- project data -->
+        {% for project in data %}
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    <!-- project image -->
+                    <img src="{{ url_for('display_image', filename=project.image) }}" class="img-fluid" />
+                    <!-- project image -->
+
+                    <!-- project detail link -->
+                    <a href="{{ url_for('projects_detail', id=project._id) }}">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                    </a>
+                    <!-- project detail link -->
+
+                </div>
+                <div class="card-body">
+                    <!-- project title -->
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <!-- project title -->
+                </div>
+            </div>
+        </div>
+        <!-- project data -->
+        {% endfor %}
+
+
+    </div>
+
+</section>
+<!--Section: Projects-->
+
+<!-- Pagination Projects -->
+<nav class="my-4" aria-label="...">
+    <ul class="pagination pagination-circle justify-content-center">
+        <li class="page-item">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</nav>
+<!-- Pagination Projects -->
+{% endblock %}
